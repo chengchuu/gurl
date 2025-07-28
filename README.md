@@ -18,16 +18,16 @@ Here's a quick example of how to use GURL:
 package main
 
 import (
-	"fmt"
-	"github.com/mazeyqian/gurl"
+ "fmt"
+ "github.com/mazeyqian/gurl"
 )
 
 func main() {
-	result, err := gurl.GetQueryParam("http://example.com/?t1=1&t2=2", "t1")
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(result) // Output: "1"
+ result, err := gurl.GetQueryParam("http://example.com/?t1=1&t2=2", "t1")
+ if err != nil {
+  panic(err)
+ }
+ fmt.Println(result) // Output: "1"
 }
 ```
 
@@ -52,7 +52,6 @@ func main() {
 | `CheckValid` | `url string` | `bool` | Check if a URL is valid |
 | `CheckValidHttpUrl` | `url string` | `bool` | Check if a URL is valid and uses either the HTTP or HTTPS scheme |
 | `GetUrlFileType` | `url string` | `string, error` | Get the file type of a URL |
-
 
 ## Examples
 
