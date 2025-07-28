@@ -521,3 +521,31 @@ func GetUrlFileType(u string) (string, error) {
 	}
 	return strings.TrimPrefix(filepath.Ext(parsedUrl.Path), "."), nil
 }
+
+// GetBaseUrl retrieves the base URL without query parameters and fragment.
+//
+// Parameters:
+//
+//	url: The URL from which to retrieve the base URL.
+//
+// Returns:
+//
+//	A string containing the base URL, and an error if any occurred.
+//
+// Example:
+//
+//	result, err := GetBaseUrl("https://example.com/path/to/resource?param=value#fragment")
+//	if err != nil {
+//	  panic(err)
+//	}
+//	fmt.Println(result) // Output: "https://example.com/path/to/resource"
+func GetBaseUrl(u string) (string, error) {
+	parsedUrl, err := url.Parse(u)
+	if err != nil {
+		return "", err
+	}
+	// Clear query parameters and fragment
+	parsedUrl.RawQuery = ""
+	parsedUrl.Fragment = ""
+	return parsedUrl.String(), nil
+}

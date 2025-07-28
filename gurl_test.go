@@ -179,3 +179,26 @@ func TestGetUrlFileType(t *testing.T) {
 		t.Errorf("GetUrlFileType was incorrect, got: %s, want: %s.", result, "png")
 	}
 }
+
+func TestGetBaseUrl(t *testing.T) {
+	type BaseUrlTest struct {
+		url    string
+		result string
+	}
+	tests := []BaseUrlTest{
+		{"https://example.com/path/to/resource?param=value#fragment", "https://example.com/path/to/resource"},
+		{"http://example.com/?t1=1&t2=2", "http://example.com/"},
+		{"https://subdomain.example.com:8080/path?query=test#hash", "https://subdomain.example.com:8080/path"},
+		{"http://example.com/path/to/resource", "http://example.com/path/to/resource"},
+		{"https://example.com/#fragment", "https://example.com/"},
+		{"http://example.com/?query=only", "http://example.com/"},
+		{"https://example.com/deep/nested/path?multiple=params&another=value#section", "https://example.com/deep/nested/path"},
+		{"http://example.com/path?a=1&b=2#a=1&b=2", "http://example.com/path"},
+	}
+	for _, test := range tests {
+		result, err := GetBaseUrl(test.url)
+		if err != nil || result != test.result {
+			t.Errorf("GetBaseUrl was incorrect, got: %s, want: %s.", result, test.result)
+		}
+	}
+}

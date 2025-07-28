@@ -7,7 +7,7 @@ GURL is a Go library for URL manipulation and validation. It provides functions 
 To install GURL, execute the following command:
 
 ```bash
-go get github.com/mazeyqian/gurl
+go get github.com/mazeychuu/gurl
 ```
 
 ## Usage
@@ -18,16 +18,16 @@ Here's a quick example of how to use GURL:
 package main
 
 import (
-	"fmt"
-	"github.com/mazeyqian/gurl"
+ "fmt"
+ "github.com/mazeychuu/gurl"
 )
 
 func main() {
-	result, err := gurl.GetQueryParam("http://example.com/?t1=1&t2=2", "t1")
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(result) // Output: "1"
+ result, err := gurl.GetQueryParam("http://example.com/?t1=1&t2=2", "t1")
+ if err != nil {
+  panic(err)
+ }
+ fmt.Println(result) // Output: "1"
 }
 ```
 
@@ -52,9 +52,20 @@ func main() {
 | `CheckValid` | `url string` | `bool` | Check if a URL is valid |
 | `CheckValidHttpUrl` | `url string` | `bool` | Check if a URL is valid and uses either the HTTP or HTTPS scheme |
 | `GetUrlFileType` | `url string` | `string, error` | Get the file type of a URL |
-
+| `GetBaseUrl` | `url string` | `string, error` | Get the base URL without query parameters and fragment |
 
 ## Examples
+
+### Basic URL Manipulation
+
+```go
+// Get base URL without query parameters and fragment
+result, err := gurl.GetBaseUrl("https://example.com/path?param=value#fragment")
+if err != nil {
+    panic(err)
+}
+fmt.Println(result) // Output: "https://example.com/path"
+```
 
 ### Hash Parameters
 
@@ -70,7 +81,7 @@ gurl.DelHashParam(link, "p1") // "https://example.com/path1#path2?p2=2"
 
 ## Contributing
 
-Contributions to GURL are welcome! Please submit a pull request or open an issue on [GitHub repository](https://github.com/mazeyqian/gurl).
+Contributions to GURL are welcome! Please submit a pull request or open an issue on [GitHub repository](https://github.com/mazeychuu/gurl).
 
 ## License
 
