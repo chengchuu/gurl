@@ -50,9 +50,9 @@ func main() {
 | `GetProtocol` | `url string` | `string, error` | Get the protocol from a URL |
 | `SetProtocol` | `url, newProtocol string` | `string, error` | Set the protocol in a URL |
 | `CheckValid` | `url string` | `bool` | Check if a URL is valid |
-| `CheckValidHttpUrl` | `url string` | `bool` | Check if a URL is valid and uses either the HTTP or HTTPS scheme |
-| `GetUrlFileType` | `url string` | `string, error` | Get the file type of a URL |
-| `GetBaseUrl` | `url string` | `string, error` | Get the base URL without query parameters and fragment |
+| `CheckValidHTTPURL` | `url string` | `bool` | Check if a URL is valid and uses either the HTTP or HTTPS scheme |
+| `GetURLFileType` | `url string` | `string, error` | Get the file type of a URL |
+| `GetBaseURL` | `url string` | `string, error` | Get the base URL without query parameters and fragment |
 
 ## Examples
 
@@ -60,7 +60,7 @@ func main() {
 
 ```go
 // Get base URL without query parameters and fragment
-result, err := gurl.GetBaseUrl("https://example.com/path?param=value#fragment")
+result, err := gurl.GetBaseURL("https://example.com/path?param=value#fragment")
 if err != nil {
     panic(err)
 }
