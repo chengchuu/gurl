@@ -7,7 +7,7 @@ GURL is a Go library for URL manipulation and validation. It provides functions 
 To install GURL, execute the following command:
 
 ```bash
-go get github.com/mazeychuu/gurl
+go get github.com/chengchuu/gurl
 ```
 
 ## Usage
@@ -19,7 +19,7 @@ package main
 
 import (
  "fmt"
- "github.com/mazeychuu/gurl"
+ "github.com/chengchuu/gurl"
 )
 
 func main() {
@@ -81,7 +81,7 @@ gurl.DelHashParam(link, "p1") // "https://example.com/path1#path2?p2=2"
 
 ## Contributing
 
-Contributions to GURL are welcome! Please submit a pull request or open an issue on [GitHub repository](https://github.com/mazeychuu/gurl).
+Contributions to GURL are welcome! Please submit a pull request or open an issue on [GitHub repository](https://github.com/chengchuu/gurl).
 
 ## License
 
