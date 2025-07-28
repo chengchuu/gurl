@@ -52,8 +52,20 @@ func main() {
 | `CheckValid` | `url string` | `bool` | Check if a URL is valid |
 | `CheckValidHttpUrl` | `url string` | `bool` | Check if a URL is valid and uses either the HTTP or HTTPS scheme |
 | `GetUrlFileType` | `url string` | `string, error` | Get the file type of a URL |
+| `GetBaseUrl` | `url string` | `string, error` | Get the base URL without query parameters and fragment |
 
 ## Examples
+
+### Basic URL Manipulation
+
+```go
+// Get base URL without query parameters and fragment
+result, err := gurl.GetBaseUrl("https://example.com/path?param=value#fragment")
+if err != nil {
+    panic(err)
+}
+fmt.Println(result) // Output: "https://example.com/path"
+```
 
 ### Hash Parameters
 
