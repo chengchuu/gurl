@@ -1,3 +1,3 @@
-module github.com/mazeychuu/gurl
+module github.com/chengchuu/gurl
 
 go 1.19
