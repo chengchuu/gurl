@@ -26,11 +26,11 @@ import (
 //	}
 //	fmt.Println(result) // Output: "1"
 func GetQueryParam(u, param string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return "", err
 	}
-	values := parsedUrl.Query()
+	values := parsedURL.Query()
 	return values.Get(param), nil
 }
 
@@ -54,14 +54,14 @@ func GetQueryParam(u, param string) (string, error) {
 //	}
 //	fmt.Println(result) // Output: "http://example.com/?p1=3&p2=2"
 func SetQueryParam(u, param, value string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return "", err
 	}
-	values := parsedUrl.Query()
+	values := parsedURL.Query()
 	values.Set(param, value)
-	parsedUrl.RawQuery = values.Encode()
-	return parsedUrl.String(), nil
+	parsedURL.RawQuery = values.Encode()
+	return parsedURL.String(), nil
 }
 
 // DelQueryParam deletes a specified query parameter from a URL and returns the new URL.
@@ -83,14 +83,14 @@ func SetQueryParam(u, param, value string) (string, error) {
 //	}
 //	fmt.Println(result) // Output: "http://example.com/?p2=2"
 func DelQueryParam(u, param string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return "", err
 	}
-	values := parsedUrl.Query()
+	values := parsedURL.Query()
 	values.Del(param)
-	parsedUrl.RawQuery = values.Encode()
-	return parsedUrl.String(), nil
+	parsedURL.RawQuery = values.Encode()
+	return parsedURL.String(), nil
 }
 
 func parseFragment(fra string) (path string, query string) {
@@ -125,11 +125,11 @@ func parseFragment(fra string) (path string, query string) {
 //	}
 //	fmt.Println(result) // Output: "1"
 func GetHashParam(u, param string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return "", err
 	}
-	fra := parsedUrl.Fragment
+	fra := parsedURL.Fragment
 	_, fraQuery := parseFragment(fra)
 	hashParams := []string{}
 	if fraQuery != "" {
@@ -164,11 +164,11 @@ func GetHashParam(u, param string) (string, error) {
 //	}
 //	fmt.Println(result) // Output: "http://example.com/#?t1=3&t2=2"
 func SetHashParam(u, param, value string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return "", err
 	}
-	fra := parsedUrl.Fragment
+	fra := parsedURL.Fragment
 	fraPath, fraQuery := parseFragment(fra)
 	hashParams := []string{}
 	if fraQuery != "" {
@@ -189,8 +189,8 @@ func SetHashParam(u, param, value string) (string, error) {
 		newHashParams = append(newHashParams, param+"="+value)
 	}
 	newFraStr := fmt.Sprintf("%s?%s", fraPath, strings.Join(newHashParams, "&"))
-	parsedUrl.Fragment = newFraStr
-	return parsedUrl.String(), nil
+	parsedURL.Fragment = newFraStr
+	return parsedURL.String(), nil
 }
 
 // DelHashParam deletes a specified hash parameter from a URL and returns the new URL.
@@ -212,11 +212,11 @@ func SetHashParam(u, param, value string) (string, error) {
 //	}
 //	fmt.Println(result) // Output: "http://example.com/#?t2=2"
 func DelHashParam(u, param string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return "", err
 	}
-	fra := parsedUrl.Fragment
+	fra := parsedURL.Fragment
 	fraPath, fraQuery := parseFragment(fra)
 	hashParams := []string{}
 	if fraQuery != "" {
@@ -235,8 +235,8 @@ func DelHashParam(u, param string) (string, error) {
 	} else {
 		newFraStr = fmt.Sprintf("%s?%s", fraPath, strings.Join(newHashParams, "&"))
 	}
-	parsedUrl.Fragment = newFraStr
-	return parsedUrl.String(), nil
+	parsedURL.Fragment = newFraStr
+	return parsedURL.String(), nil
 }
 
 // GetPath retrieves the path from a URL.
@@ -257,11 +257,11 @@ func DelHashParam(u, param string) (string, error) {
 //	}
 //	fmt.Println(result) // Output: "/path/to/resource"
 func GetPath(u string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return "", err
 	}
-	return parsedUrl.Path, nil
+	return parsedURL.Path, nil
 }
 
 // SetPath sets the path in a URL and returns the new URL.
@@ -283,12 +283,12 @@ func GetPath(u string) (string, error) {
 //	}
 //	fmt.Println(result) // Output: "http://example.com/new/path"
 func SetPath(u, newPath string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return "", err
 	}
-	parsedUrl.Path = newPath
-	return parsedUrl.String(), nil
+	parsedURL.Path = newPath
+	return parsedURL.String(), nil
 }
 
 // GetHost retrieves the host from a URL.
@@ -309,11 +309,11 @@ func SetPath(u, newPath string) (string, error) {
 //	}
 //	fmt.Println(result) // Output: "example.com:8080"
 func GetHost(u string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return "", err
 	}
-	return parsedUrl.Host, nil
+	return parsedURL.Host, nil
 }
 
 // SetHost sets the host in a URL and returns the new URL.
@@ -335,12 +335,12 @@ func GetHost(u string) (string, error) {
 //	}
 //	fmt.Println(result) // Output: "http://newhost.com:9090/path/to/resource"
 func SetHost(u, newHost string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return "", err
 	}
-	parsedUrl.Host = newHost
-	return parsedUrl.String(), nil
+	parsedURL.Host = newHost
+	return parsedURL.String(), nil
 }
 
 // GetHostname retrieves the hostname from a URL.
@@ -361,11 +361,11 @@ func SetHost(u, newHost string) (string, error) {
 //	}
 //	fmt.Println(result) // Output: "subdomain.example.com"
 func GetHostname(u string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return "", err
 	}
-	hostParts := strings.Split(parsedUrl.Host, ":")
+	hostParts := strings.Split(parsedURL.Host, ":")
 	return hostParts[0], nil
 }
 
@@ -388,17 +388,17 @@ func GetHostname(u string) (string, error) {
 //	}
 //	fmt.Println(result) // Output: "http://newsubdomain.example.com:8080/path/to/resource"
 func SetHostname(u, newHostname string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return "", err
 	}
-	hostParts := strings.Split(parsedUrl.Host, ":")
+	hostParts := strings.Split(parsedURL.Host, ":")
 	if len(hostParts) > 1 {
-		parsedUrl.Host = newHostname + ":" + hostParts[1]
+		parsedURL.Host = newHostname + ":" + hostParts[1]
 	} else {
-		parsedUrl.Host = newHostname
+		parsedURL.Host = newHostname
 	}
-	return parsedUrl.String(), nil
+	return parsedURL.String(), nil
 }
 
 // GetProtocol retrieves the protocol from a URL.
@@ -419,11 +419,11 @@ func SetHostname(u, newHostname string) (string, error) {
 //	}
 //	fmt.Println(result) // Output: "http"
 func GetProtocol(u string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return "", err
 	}
-	return strings.Split(parsedUrl.Scheme, ":")[0], nil
+	return strings.Split(parsedURL.Scheme, ":")[0], nil
 }
 
 // SetProtocol sets the protocol in a URL and returns the new URL.
@@ -445,12 +445,12 @@ func GetProtocol(u string) (string, error) {
 //	}
 //	fmt.Println(result) // Output: "https://example.com/path/to/resource"
 func SetProtocol(u, newProtocol string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return "", err
 	}
-	parsedUrl.Scheme = newProtocol
-	return parsedUrl.String(), nil
+	parsedURL.Scheme = newProtocol
+	return parsedURL.String(), nil
 }
 
 // CheckValid checks if a URL is valid.
@@ -468,14 +468,14 @@ func SetProtocol(u, newProtocol string) (string, error) {
 //	result := CheckValid("http://example.com/path/to/resource")
 //	fmt.Println(result) // Output: true
 func CheckValid(u string) bool {
-	parsedUrl, err := url.Parse(u)
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return false
 	}
-	return parsedUrl.Scheme != "" && parsedUrl.Host != ""
+	return parsedURL.Scheme != "" && parsedURL.Host != ""
 }
 
-// CheckValidHttpUrl checks if a URL is a valid HTTP or HTTPS URL.
+// CheckValidHTTPURL checks if a URL is a valid HTTP or HTTPS URL.
 //
 // Parameters:
 //
@@ -487,17 +487,17 @@ func CheckValid(u string) bool {
 //
 // Example:
 //
-//	result := CheckValidHttpUrl("http://example.com/path/to/resource")
+//	result := CheckValidHTTPURL("http://example.com/path/to/resource")
 //	fmt.Println(result) // Output: true
-func CheckValidHttpUrl(u string) bool {
-	parsedUrl, err := url.Parse(u)
+func CheckValidHTTPURL(u string) bool {
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return false
 	}
-	return parsedUrl.Scheme == "http" || parsedUrl.Scheme == "https"
+	return parsedURL.Scheme == "http" || parsedURL.Scheme == "https"
 }
 
-// GetUrlFileType retrieves the file type from a URL.
+// GetURLFileType retrieves the file type from a URL.
 //
 // Parameters:
 //
@@ -509,20 +509,20 @@ func CheckValidHttpUrl(u string) bool {
 //
 // Example:
 //
-//	result, err := GetUrlFileType("https://example.com/a/b/c.png")
+//	result, err := GetURLFileType("https://example.com/a/b/c.png")
 //	if err != nil {
 //	  panic(err)
 //	}
 //	fmt.Println(result) // Output: "png"
-func GetUrlFileType(u string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+func GetURLFileType(u string) (string, error) {
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return "", err
 	}
-	return strings.TrimPrefix(filepath.Ext(parsedUrl.Path), "."), nil
+	return strings.TrimPrefix(filepath.Ext(parsedURL.Path), "."), nil
 }
 
-// GetBaseUrl retrieves the base URL without query parameters and fragment.
+// GetBaseURL retrieves the base URL without query parameters and fragment.
 //
 // Parameters:
 //
@@ -534,18 +534,18 @@ func GetUrlFileType(u string) (string, error) {
 //
 // Example:
 //
-//	result, err := GetBaseUrl("https://example.com/path/to/resource?param=value#fragment")
+//	result, err := GetBaseURL("https://example.com/path/to/resource?param=value#fragment")
 //	if err != nil {
 //	  panic(err)
 //	}
 //	fmt.Println(result) // Output: "https://example.com/path/to/resource"
-func GetBaseUrl(u string) (string, error) {
-	parsedUrl, err := url.Parse(u)
+func GetBaseURL(u string) (string, error) {
+	parsedURL, err := url.Parse(u)
 	if err != nil {
 		return "", err
 	}
 	// Clear query parameters and fragment
-	parsedUrl.RawQuery = ""
-	parsedUrl.Fragment = ""
-	return parsedUrl.String(), nil
+	parsedURL.RawQuery = ""
+	parsedURL.Fragment = ""
+	return parsedURL.String(), nil
 }

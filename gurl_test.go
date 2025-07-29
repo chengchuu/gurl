@@ -167,20 +167,20 @@ func TestCheckValid(t *testing.T) {
 	}
 }
 
-func TestCheckValidHttpUrl(t *testing.T) {
-	if !CheckValidHttpUrl("http://example.com/?#2333?t1=1&t2=2&t3=3&t4=4") {
-		t.Errorf("CheckValidHttpUrl was incorrect, got: false, want: true.")
+func TestCheckValidHTTPURL(t *testing.T) {
+	if !CheckValidHTTPURL("http://example.com/?#2333?t1=1&t2=2&t3=3&t4=4") {
+		t.Errorf("CheckValidHTTPURL was incorrect, got: false, want: true.")
 	}
 }
 
-func TestGetUrlFileType(t *testing.T) {
-	result, err := GetUrlFileType("https://example.com/a/b/c.png")
+func TestGetURLFileType(t *testing.T) {
+	result, err := GetURLFileType("https://example.com/a/b/c.png")
 	if err != nil || result != "png" {
-		t.Errorf("GetUrlFileType was incorrect, got: %s, want: %s.", result, "png")
+		t.Errorf("GetURLFileType was incorrect, got: %s, want: %s.", result, "png")
 	}
 }
 
-func TestGetBaseUrl(t *testing.T) {
+func TestGetBaseURL(t *testing.T) {
 	type BaseUrlTest struct {
 		url    string
 		result string
@@ -196,9 +196,9 @@ func TestGetBaseUrl(t *testing.T) {
 		{"http://example.com/path?a=1&b=2#a=1&b=2", "http://example.com/path"},
 	}
 	for _, test := range tests {
-		result, err := GetBaseUrl(test.url)
+		result, err := GetBaseURL(test.url)
 		if err != nil || result != test.result {
-			t.Errorf("GetBaseUrl was incorrect, got: %s, want: %s.", result, test.result)
+			t.Errorf("GetBaseURL was incorrect, got: %s, want: %s.", result, test.result)
 		}
 	}
 }
