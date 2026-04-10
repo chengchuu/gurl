@@ -18,23 +18,24 @@ Here's a quick example of how to use GURL:
 package main
 
 import (
- "fmt"
- "github.com/chengchuu/gurl"
+  "fmt"
+
+  "github.com/chengchuu/gurl"
 )
 
 func main() {
- result, err := gurl.GetQueryParam("http://example.com/?t1=1&t2=2", "t1")
- if err != nil {
-  panic(err)
- }
- fmt.Println(result) // Output: "1"
+  result, err := gurl.GetQueryParam("http://example.com/?t1=1&t2=2", "t1")
+  if err != nil {
+    panic(err)
+  }
+  fmt.Println(result) // Output: "1"
 }
 ```
 
 ## Functions
 
 | Function | Parameter | Return Value | Description |
-|----------|------------|--------------|-------------|
+|----------|-----------|--------------|-------------|
 | `GetQueryParam` | `url, param string` | `string, error` | Get the value of a query parameter from a URL |
 | `SetQueryParam` | `url, param, value string` | `string, error` | Set the value of a query parameter in a URL |
 | `DelQueryParam` | `url, param string` | `string, error` | Delete a query parameter from a URL |
@@ -49,10 +50,10 @@ func main() {
 | `SetHostname` | `url, newHostname string` | `string, error` | Set the hostname in a URL |
 | `GetProtocol` | `url string` | `string, error` | Get the protocol from a URL |
 | `SetProtocol` | `url, newProtocol string` | `string, error` | Set the protocol in a URL |
-| `CheckValid` | `url string` | `bool` | Check if a URL is valid |
-| `CheckValidHTTPURL` | `url string` | `bool` | Check if a URL is valid and uses either the HTTP or HTTPS scheme |
 | `GetURLFileType` | `url string` | `string, error` | Get the file type of a URL |
 | `GetBaseURL` | `url string` | `string, error` | Get the base URL without query parameters and fragment |
+| `CheckValid` | `url string` | `bool` | Check if a URL is valid (`scheme` and `host` are required) |
+| `CheckValidHTTPURL` | `url string` | `bool` | Check if the URL scheme is `http` or `https` |
 
 ## Examples
 
@@ -62,9 +63,20 @@ func main() {
 // Get base URL without query parameters and fragment
 result, err := gurl.GetBaseURL("https://example.com/path?param=value#fragment")
 if err != nil {
-    panic(err)
+  panic(err)
 }
 fmt.Println(result) // Output: "https://example.com/path"
+```
+
+### URL Validation
+
+```go
+fmt.Println(gurl.CheckValid("https://example.com/path"))      // true
+fmt.Println(gurl.CheckValid("example.com/path"))              // false
+
+fmt.Println(gurl.CheckValidHTTPURL("http://example.com"))     // true
+fmt.Println(gurl.CheckValidHTTPURL("https://example.com"))    // true
+fmt.Println(gurl.CheckValidHTTPURL("ftp://example.com/file")) // false
 ```
 
 ### Hash Parameters
@@ -74,9 +86,9 @@ The typical hash history mode URLs are like this: `https://example.com/path1#pat
 ```go
 link := "https://example.com/path1#path2?p1=1&p2=2"
 
-gurl.GetHashParam(link, "p1") // "1"
-gurl.SetHashParam(link, "p1", "3") // "https://example.com/path1#path2?p1=3&p2=2"
-gurl.DelHashParam(link, "p1") // "https://example.com/path1#path2?p2=2"
+gurl.GetHashParam(link, "p1")       // "1"
+gurl.SetHashParam(link, "p1", "3")  // "https://example.com/path1#path2?p1=3&p2=2"
+gurl.DelHashParam(link, "p1")       // "https://example.com/path1#path2?p2=2"
 ```
 
 ## Contributing
