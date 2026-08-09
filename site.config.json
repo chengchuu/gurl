@@ -1,0 +1,73 @@
+{
+  "packageName": "gurl",
+  "displayName": "gurl",
+  "modulePath": "github.com/chengchuu/gurl",
+  "description": "A Go library for inspecting, validating, and modifying URL components.",
+  "repository": {
+    "owner": "chengchuu",
+    "name": "gurl"
+  },
+  "pwa": {
+    "shortName": "gurl"
+  },
+  "goVersion": "1.19",
+  "license": "MIT",
+  "icons": {
+    "favicon": "gurl-32x32.png",
+    "icon192": "gurl-192x192.png",
+    "icon512": "gurl-512x512.png",
+    "maskableIcon512": "gurl-maskable-512x512.png",
+    "appleTouchIcon": "gurl-192x192.png",
+    "openGraphImage": "gurl-open-graph-1200x630.png"
+  },
+  "theme": {
+    "colorLight": "#ffffff",
+    "colorDark": "#141414",
+    "primary": {
+      "light": {
+        "base": "#4d8ffb",
+        "hover": "#256fd8",
+        "active": "#185aaa",
+        "soft": "#eaf2ff",
+        "rgb": "77, 143, 251",
+        "hoverRgb": "37, 111, 216",
+        "activeRgb": "24, 90, 170"
+      },
+      "dark": {
+        "base": "#5089e8",
+        "hover": "#6198ee",
+        "active": "#74a5f3",
+        "soft": "#1b3155",
+        "rgb": "80, 137, 232",
+        "hoverRgb": "97, 152, 238",
+        "activeRgb": "116, 165, 243"
+      }
+    }
+  },
+  "pages": [
+    {
+      "name": "home",
+      "outputPath": "index.html",
+      "path": "",
+      "title": "gurl | URL manipulation for Go",
+      "description": "Inspect, validate, and modify URL components with the gurl package for Go.",
+      "schemaType": "SoftwareSourceCode"
+    },
+    {
+      "name": "examples",
+      "outputPath": "examples/index.html",
+      "path": "examples/",
+      "title": "Go URL examples | gurl",
+      "description": "Run checked-in Go examples that inspect and modify URL components with gurl.",
+      "schemaType": "TechArticle"
+    },
+    {
+      "name": "api",
+      "outputPath": "api/index.html",
+      "path": "api/",
+      "title": "Go API reference | gurl",
+      "description": "Browse source-derived Go API documentation for every exported gurl function.",
+      "schemaType": "TechArticle"
+    }
+  ]
+}

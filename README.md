@@ -1,100 +1,89 @@
-# GURL: Go URL Manipulation Library
+# gurl
 
-GURL is a Go library for URL manipulation and validation. It provides functions for getting and setting URL parameters, paths, hosts, and protocols, as well as checking URL validity and getting file types from URLs.
+`gurl` is a Go library for inspecting, validating, and modifying URL components. It provides
+focused helpers for query and fragment parameters, paths, hosts, protocols, file extensions, and
+base URLs without performing network requests.
 
-## Installation
+## Install
 
-To install GURL, execute the following command:
+Go 1.19 or later is supported.
 
 ```bash
 go get github.com/chengchuu/gurl
 ```
 
+```go
+import "github.com/chengchuu/gurl"
+```
+
 ## Usage
 
-Here's a quick example of how to use GURL:
-
 ```go
-package main
-
-import (
-  "fmt"
-
-  "github.com/chengchuu/gurl"
-)
-
-func main() {
-  result, err := gurl.GetQueryParam("http://example.com/?t1=1&t2=2", "t1")
-  if err != nil {
-    panic(err)
-  }
-  fmt.Println(result) // Output: "1"
-}
-```
-
-## Functions
-
-| Function | Parameter | Return Value | Description |
-|----------|-----------|--------------|-------------|
-| `GetQueryParam` | `url, param string` | `string, error` | Get the value of a query parameter from a URL |
-| `SetQueryParam` | `url, param, value string` | `string, error` | Set the value of a query parameter in a URL |
-| `DelQueryParam` | `url, param string` | `string, error` | Delete a query parameter from a URL |
-| `GetHashParam` | `url, param string` | `string, error` | Get the value of a query parameter from the URL fragment |
-| `SetHashParam` | `url, param, value string` | `string, error` | Set the value of a query parameter in the URL fragment |
-| `DelHashParam` | `url, param string` | `string, error` | Delete a query parameter from the URL fragment |
-| `GetPath` | `url string` | `string, error` | Get the path from a URL |
-| `SetPath` | `url, newPath string` | `string, error` | Set the path in a URL |
-| `GetHost` | `url string` | `string, error` | Get the host from a URL |
-| `SetHost` | `url, newHost string` | `string, error` | Set the host in a URL |
-| `GetHostname` | `url string` | `string, error` | Get the hostname from a URL |
-| `SetHostname` | `url, newHostname string` | `string, error` | Set the hostname in a URL |
-| `GetProtocol` | `url string` | `string, error` | Get the protocol from a URL |
-| `SetProtocol` | `url, newProtocol string` | `string, error` | Set the protocol in a URL |
-| `GetURLFileType` | `url string` | `string, error` | Get the file type of a URL |
-| `GetBaseURL` | `url string` | `string, error` | Get the base URL without query parameters and fragment |
-| `CheckValid` | `url string` | `bool` | Check if a URL is valid (`scheme` and `host` are required) |
-| `CheckValidHTTPURL` | `url string` | `bool` | Check if the URL scheme is `http` or `https` |
-
-## Examples
-
-### Basic URL Manipulation
-
-```go
-// Get base URL without query parameters and fragment
-result, err := gurl.GetBaseURL("https://example.com/path?param=value#fragment")
+value, err := gurl.GetQueryParam("https://example.com/search?q=go&lang=en", "q")
 if err != nil {
-  panic(err)
+	log.Fatal(err)
 }
-fmt.Println(result) // Output: "https://example.com/path"
+fmt.Println(value) // go
 ```
 
-### URL Validation
+Run the complete example with `go run ./examples/basic`.
 
-```go
-fmt.Println(gurl.CheckValid("https://example.com/path"))      // true
-fmt.Println(gurl.CheckValid("example.com/path"))              // false
+The public API includes helpers to:
 
-fmt.Println(gurl.CheckValidHTTPURL("http://example.com"))     // true
-fmt.Println(gurl.CheckValidHTTPURL("https://example.com"))    // true
-fmt.Println(gurl.CheckValidHTTPURL("ftp://example.com/file")) // false
+- get, set, and delete URL query parameters;
+- get, set, and delete query-like parameters in URL fragments;
+- read and replace paths, hosts, hostnames, and protocols;
+- remove queries and fragments to obtain a base URL;
+- read a file extension from a URL path; and
+- check for a scheme and host with `CheckValid`, or require an `http` or `https` scheme together
+  with a host by using `CheckValidHTTPURL`.
+
+Functions that return an error pass through failures from Go's URL parser. URL setters serialize
+their result with `net/url`; query serialization can normalize ordering and escaping.
+
+## Documentation
+
+- [Public website](https://chengchuu.github.io/gurl/)
+- [Source-derived examples](https://chengchuu.github.io/gurl/examples/)
+- [Generated API reference](https://chengchuu.github.io/gurl/api/)
+- [pkg.go.dev API documentation](https://pkg.go.dev/github.com/chengchuu/gurl)
+- [GitHub repository](https://github.com/chengchuu/gurl)
+- [Basic example](examples/basic/main.go)
+
+The examples page renders `examples/basic/main.go` and `example_test.go` directly from checked-in Go
+source. The API page extracts exported declarations and GoDoc from the module-root package.
+
+## Development
+
+Run package checks from the repository root:
+
+```bash
+gofmt -w .
+go mod tidy
+go test ./...
+go test -race ./...
+go vet ./...
+go build ./...
+go run ./examples/basic
 ```
 
-### Hash Parameters
+Generate and validate the GitHub Pages artifact:
 
-The typical hash history mode URLs are like this: `https://example.com/path1#path2?p1=1&p2=2`.
-
-```go
-link := "https://example.com/path1#path2?p1=1&p2=2"
-
-gurl.GetHashParam(link, "p1")       // "1"
-gurl.SetHashParam(link, "p1", "3")  // "https://example.com/path1#path2?p1=3&p2=2"
-gurl.DelHashParam(link, "p1")       // "https://example.com/path1#path2?p2=2"
+```bash
+go run ./cmd/sitegen build
+go run ./cmd/sitegen validate
 ```
 
-## Contributing
+Preview the production-like site at `http://127.0.0.1:4173/gurl/`:
 
-Contributions to GURL are welcome! Please submit a pull request or open an issue on [GitHub repository](https://github.com/chengchuu/gurl).
+```bash
+go run ./cmd/sitegen preview
+```
+
+`dist/pages` is generated and ignored by Git. Update source configuration, GoDoc, templates, or
+assets and rebuild instead of editing generated Pages files.
 
 ## License
 
-GURL is licensed under the MIT License. For more details, please refer to the LICENSE file in this repository.
+The Go package and project-authored website code are available under the [MIT License](LICENSE).
+Vendored browser-asset notices are in [guides/THIRD_PARTY_NOTICES.md](guides/THIRD_PARTY_NOTICES.md).

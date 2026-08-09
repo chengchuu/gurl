@@ -1,6 +1,8 @@
-# Output folders
+# Generated GitHub Pages output (built in CI).
+/dist/
+
+# Other output folders
 node_modules/
-dist/
 test/unit/coverage
 test/e2e/reports
 lib/index.*

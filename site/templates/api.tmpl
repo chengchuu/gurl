@@ -1,0 +1,27 @@
+{{define "content"}}<main id="main-content">
+  <section class="section-space border-bottom" aria-labelledby="api-title">
+    <div class="container">
+      <p class="eyebrow">Generated from Go source</p>
+      <h1 id="api-title">Go API reference</h1>
+      <p class="lead col-lg-9">Exported declarations for <code>{{.API.ImportPath}}</code>. This page is generated with the Go parser and documentation packages; internal site tooling is intentionally excluded.</p>
+      <div class="code-panel mt-4"><pre class="mb-0"><code>import "{{.API.ImportPath}}"</code></pre></div>
+      <p class="mt-4 doc-copy">{{.API.Doc}}</p>
+    </div>
+  </section>
+  <section class="section-space" aria-labelledby="index-title">
+    <div class="container">
+      <h2 id="index-title">Exported declarations</h2>
+      <p>Follow a declaration link or browse the complete reference below. Signatures and prose come from the current public package source.</p>
+      <ul class="api-index list-inline">{{range .API.Items}}<li class="list-inline-item"><a href="#{{.Anchor}}">{{.Name}}</a></li>{{end}}</ul>
+      <div class="api-list mt-4">
+        {{range .API.Items}}<article class="api-entry" id="{{.Anchor}}">
+          <p class="badge text-bg-secondary mb-2">{{.Kind}}</p>
+          <h2 class="h4">{{.Name}}</h2>
+          <pre><code>{{.Signature}}</code></pre>
+          <p class="doc-copy mb-0">{{.Doc}}</p>
+        </article>{{end}}
+      </div>
+      <p class="mt-4 mb-0">Need a runnable starting point? Read the <a href="{{.Config.AssetURL "examples/"}}">source-derived examples</a> or open the <a href="{{.Config.RepositoryURL}}/tree/main/examples/basic">basic Go example on GitHub</a>.</p>
+    </div>
+  </section>
+</main>{{end}}

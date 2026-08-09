@@ -1,0 +1,57 @@
+{{define "content"}}<main id="main-content">
+  <section class="section-space border-bottom" aria-labelledby="examples-title">
+    <div class="container">
+      <p class="eyebrow">Compiled, executable documentation</p>
+      <h1 id="examples-title">Go URL examples</h1>
+      <p class="lead col-lg-9">These examples come directly from checked-in Go source. Run them locally to exercise <code>{{.API.ImportPath}}</code>; the website does not reimplement the package or send code to a remote execution service.</p>
+      <div class="d-flex flex-column align-items-start gap-2 mt-4">
+        <div class="d-flex flex-wrap gap-2 w-100">
+          <a class="btn btn-primary" href="#basic-example">Basic command</a>
+          <a class="btn btn-outline-secondary" href="#example-test">Example test</a>
+        </div>
+        <a class="btn btn-link px-0" href="{{.Config.AssetURL "api/"}}">Read the API reference</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="basic-example" class="section-space" aria-labelledby="basic-title">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <h2 id="basic-title">Run the basic command</h2>
+          <p>The generator reads this listing from <code>examples/basic/main.go</code>. It parses a query string with <code>GetQueryParam</code> and checks complete and incomplete HTTP URLs with <code>CheckValidHTTPURL</code>.</p>
+          <div class="code-panel"><pre><code>go run ./examples/basic</code></pre><p class="mb-1 text-body-secondary">Expected output</p><pre class="mb-0"><code>go
+true
+false</code></pre></div>
+          <p class="mt-3 mb-0"><a href="{{.Config.RepositoryURL}}/blob/main/examples/basic/main.go">Open the basic example source on GitHub</a></p>
+        </div>
+        <div class="col-lg-8"><div class="code-panel"><pre class="mb-0"><code>{{.BasicExample}}</code></pre></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="example-test" class="section-space bg-body-tertiary border-top border-bottom" aria-labelledby="test-title">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <h2 id="test-title">Use an example test</h2>
+          <p>The source-derived <code>ExampleGetQueryParam</code> function is compiled, and <code>go test ./...</code> verifies its output comment. Use this pattern for documentation that must stay synchronized with runtime behavior.</p>
+          <div class="code-panel"><pre class="mb-0"><code>go test ./...</code></pre></div>
+          <p class="mt-3 mb-0"><a href="{{.Config.RepositoryURL}}/blob/main/example_test.go">Open the example test source on GitHub</a></p>
+        </div>
+        <div class="col-lg-8"><div class="code-panel"><pre class="mb-0"><code>{{.ExampleTest}}</code></pre></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-space" aria-labelledby="next-title">
+    <div class="container">
+      <h2 id="next-title">Extend the examples safely</h2>
+      <div class="row g-4">
+        <article class="col-md-4"><h3 class="h5">Modify query parameters</h3><p>Use <code>SetQueryParam</code> or <code>DelQueryParam</code> and check the serialized URL returned by the package.</p></article>
+        <article class="col-md-4"><h3 class="h5">Work with hash routes</h3><p>Use the hash-parameter helpers for fragments shaped like <code>#route?key=value</code>.</p></article>
+        <article class="col-md-4"><h3 class="h5">Check exact behavior</h3><p>The <a href="{{.Config.AssetURL "api/"}}">generated API documentation</a> lists every exported function and its current GoDoc.</p></article>
+      </div>
+    </div>
+  </section>
+</main>{{end}}

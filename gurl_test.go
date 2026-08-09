@@ -40,6 +40,7 @@ func TestGetHashParam(t *testing.T) {
 		{"http://example.com/path/subp?233#?p1=1&t3=333", "t3", "333"},
 		{"http://example.com/?233#?t3=3&t4=&t5", "t4", ""},
 		{"http://example.com/?233#path?t3=3", "t3", "3"},
+		{"http://example.com/#?token=header.payload=signature", "token", "header.payload=signature"},
 	}
 	for _, test := range tests {
 		result, err := GetHashParam(test.url, test.param)
@@ -134,16 +135,31 @@ func TestSetHost(t *testing.T) {
 }
 
 func TestGetHostname(t *testing.T) {
-	result, err := GetHostname("http://subdomain.example.com/path/to/resource")
-	if err != nil || result != "subdomain.example.com" {
-		t.Errorf("GetHostname was incorrect, got: %s, want: %s.", result, "subdomain")
+	tests := map[string]string{
+		"http://subdomain.example.com/path/to/resource": "subdomain.example.com",
+		"http://[2001:db8::1]:8080/path":                "2001:db8::1",
+	}
+	for input, want := range tests {
+		result, err := GetHostname(input)
+		if err != nil || result != want {
+			t.Errorf("GetHostname(%q) = %q, %v; want %q.", input, result, err, want)
+		}
 	}
 }
 
 func TestSetHostname(t *testing.T) {
-	result, err := SetHostname("http://subdomain.example.com/path/to/resource", "newsubdomain.example.com")
-	if err != nil || result != "http://newsubdomain.example.com/path/to/resource" {
-		t.Errorf("SetHostname was incorrect, got: %s, want: %s.", result, "http://newsubdomain.example.com/path/to/resource")
+	tests := []struct {
+		input, hostname, want string
+	}{
+		{"http://subdomain.example.com/path/to/resource", "newsubdomain.example.com", "http://newsubdomain.example.com/path/to/resource"},
+		{"http://example.com:8080/path", "2001:db8::2", "http://[2001:db8::2]:8080/path"},
+		{"http://[2001:db8::1]/path", "2001:db8::2", "http://[2001:db8::2]/path"},
+	}
+	for _, test := range tests {
+		result, err := SetHostname(test.input, test.hostname)
+		if err != nil || result != test.want {
+			t.Errorf("SetHostname(%q, %q) = %q, %v; want %q.", test.input, test.hostname, result, err, test.want)
+		}
 	}
 }
 
@@ -165,11 +181,21 @@ func TestCheckValid(t *testing.T) {
 	if !CheckValid("http://example.com/?#2333?t1=1&t2=2&t3=3&t4=4") {
 		t.Errorf("CheckValid was incorrect, got: false, want: true.")
 	}
+	if CheckValid("http://:8080") {
+		t.Error("CheckValid accepted a URL without a hostname")
+	}
 }
 
 func TestCheckValidHTTPURL(t *testing.T) {
-	if !CheckValidHTTPURL("http://example.com/?#2333?t1=1&t2=2&t3=3&t4=4") {
-		t.Errorf("CheckValidHTTPURL was incorrect, got: false, want: true.")
+	for _, input := range []string{"http://example.com/?#2333?t1=1&t2=2&t3=3&t4=4", "HTTPS://example.com/path"} {
+		if !CheckValidHTTPURL(input) {
+			t.Errorf("CheckValidHTTPURL(%q) = false, want true.", input)
+		}
+	}
+	for _, input := range []string{"http:", "https://", "http://:8080", "ftp://example.com"} {
+		if CheckValidHTTPURL(input) {
+			t.Errorf("CheckValidHTTPURL(%q) = true, want false.", input)
+		}
 	}
 }
 

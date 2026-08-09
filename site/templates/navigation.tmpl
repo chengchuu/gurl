@@ -1,0 +1,31 @@
+{{define "navigation"}}<header class="sticky-top border-bottom bg-body-tertiary">
+  <nav class="navbar navbar-expand-lg" aria-label="Primary navigation">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="{{.Config.PagesBasePath}}">
+        <img src="{{.FaviconURL}}" width="32" height="32" alt="">
+        <span>{{.Config.DisplayName}}</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#site-navigation" aria-controls="site-navigation" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="site-navigation">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link{{if eq .Page.Name "home"}} active{{end}}" {{if eq .Page.Name "home"}}aria-current="page"{{end}} href="{{.Config.PagesBasePath}}">Home</a></li>
+          <li class="nav-item"><a class="nav-link{{if eq .Page.Name "examples"}} active{{end}}" {{if eq .Page.Name "examples"}}aria-current="page"{{end}} href="{{.Config.AssetURL "examples/"}}">Examples</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{.Config.PagesBasePath}}#install">Install</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{.Config.PagesBasePath}}#usage">Usage</a></li>
+          <li class="nav-item"><a class="nav-link{{if eq .Page.Name "api"}} active{{end}}" {{if eq .Page.Name "api"}}aria-current="page"{{end}} href="{{.Config.AssetURL "api/"}}">API</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{.Config.RepositoryURL}}">GitHub</a></li>
+        </ul>
+        <label class="theme-picker d-flex flex-nowrap align-items-center gap-2 ms-lg-3 mt-3 mt-lg-0">
+          <span>Theme</span>
+          <select class="form-select form-select-sm w-auto" data-theme-select aria-label="Choose website theme">
+            <option value="system">System</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </nav>
+</header>{{end}}
