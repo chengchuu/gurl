@@ -72,18 +72,18 @@ gurl.SetProtocol("https://example.com/abc/?#2333?t1=1&t2=2&t3=3&t4=4", "ftp") //
 gurl.SetProtocol("ftp://example.com/abc/def/?#2333?t1=1&t2=2&t3=3&t4=4", "file") // file://example.com/abc/def/?#2333?t1=1&t2=2&t3=3&t4=4
 gurl.SetProtocol("file://example.com/abc/def?#2333?t1=1&t2=2&t3=3&t4=4", "http") // http://example.com/abc/def?#2333?t1=1&t2=2&t3=3&t4=4
 
-// CheckValidUrl
+// CheckValid
 gurl.CheckValid("http://example.com/?#2333?t1=1&t2=2&t3=3&t4=4") // true
 gurl.CheckValid("https://example.com/abc/?#2333?t1=1&t2=2&t3=3&t4=4") // true
 gurl.CheckValid("ftp://example.com/abc/def/?#2333?t1=1&t2=2&t3=3&t4=4") // true
 
-// CheckValidHttpUrl
-gurl.CheckValidHttpUrl("http://example.com/?#2333?t1=1&t2=2&t3=3&t4=4") // true
-gurl.CheckValidHttpUrl("https://example.com/abc/?#2333?t1=1&t2=2&t3=3&t4=4") // true
-gurl.CheckValidHttpUrl("ftp://example.com/abc/def/?#2333?t1=1&t2=2&t3=3&t4=4") // false
+// CheckValidHTTPURL
+gurl.CheckValidHTTPURL("http://example.com/?#2333?t1=1&t2=2&t3=3&t4=4") // true
+gurl.CheckValidHTTPURL("https://example.com/abc/?#2333?t1=1&t2=2&t3=3&t4=4") // true
+gurl.CheckValidHTTPURL("ftp://example.com/abc/def/?#2333?t1=1&t2=2&t3=3&t4=4") // false
 
-// GetUrlFileType
-gurl.GetUrlFileType("https://example.com/a/b/c.png") // "png"
-gurl.GetUrlFileType("https://example.com/a/b/c.png?x=1") // "png"
-gurl.GetUrlFileType("https://example.com/a/b/c.jpg#x=1") // "jpg"
-gurl.GetUrlFileType("https://example.com/a/b/c.v/a") // ""
+// GetURLFileType
+gurl.GetURLFileType("https://example.com/a/b/c.png") // "png"
+gurl.GetURLFileType("https://example.com/a/b/c.png?x=1") // "png"
+gurl.GetURLFileType("https://example.com/a/b/c.jpg#x=1") // "jpg"
+gurl.GetURLFileType("https://example.com/a/b/c.v/a") // ""

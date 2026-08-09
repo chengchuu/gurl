@@ -1,0 +1,174 @@
+:root {
+  --site-hero-glow: color-mix(in srgb, var(--project-primary-soft) 78%, transparent);
+}
+
+.btn-primary {
+  --bs-btn-color: var(--project-primary-contrast);
+  --bs-btn-bg: var(--project-primary);
+  --bs-btn-border-color: var(--project-primary);
+  --bs-btn-hover-color: var(--project-primary-state-contrast);
+  --bs-btn-hover-bg: var(--project-primary-hover);
+  --bs-btn-hover-border-color: var(--project-primary-hover);
+  --bs-btn-focus-shadow-rgb: var(--project-primary-rgb);
+  --bs-btn-active-color: var(--project-primary-state-contrast);
+  --bs-btn-active-bg: var(--project-primary-active);
+  --bs-btn-active-border-color: var(--project-primary-active);
+  --bs-btn-disabled-color: var(--project-primary-contrast);
+  --bs-btn-disabled-bg: var(--project-primary);
+  --bs-btn-disabled-border-color: var(--project-primary);
+}
+
+html {
+  scroll-padding-top: 5rem;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 2000;
+  top: 0.5rem;
+  left: 0.5rem;
+  transform: translateY(-150%);
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--bs-border-radius);
+  color: var(--bs-body-bg);
+  background: var(--bs-body-color);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.navbar-brand img {
+  border-radius: 0.45rem;
+}
+
+.theme-picker {
+  color: var(--bs-secondary-color);
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.theme-picker .form-select {
+  background-color: var(--bs-tertiary-bg);
+}
+
+.hero-section {
+  background:
+    radial-gradient(circle at 80% 20%, var(--site-hero-glow), transparent 35%),
+    var(--bs-body-bg);
+}
+
+.py-lg-6 {
+  padding-top: 7rem !important;
+  padding-bottom: 7rem !important;
+}
+
+.section-space {
+  padding: 5rem 0;
+}
+
+.eyebrow {
+  color: var(--bs-link-color);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.code-panel {
+  padding: 1.25rem;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius-lg);
+  background: var(--bs-tertiary-bg);
+}
+
+pre {
+  overflow-x: auto;
+  color: var(--bs-emphasis-color);
+}
+
+.copy-status {
+  min-height: 1.5rem;
+}
+
+.api-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+.api-entry {
+  padding: 1.5rem 0;
+  border-top: var(--bs-border-width) solid var(--bs-border-color);
+  scroll-margin-top: 5rem;
+}
+
+.api-entry pre {
+  padding: 1rem;
+  border-radius: var(--bs-border-radius);
+  background: var(--bs-tertiary-bg);
+}
+
+.doc-copy {
+  white-space: pre-line;
+}
+
+.update-notice {
+  position: fixed;
+  z-index: 1090;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: fit-content;
+  max-width: calc(100% - 2rem);
+  padding: 1rem;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius-lg);
+  background: var(--bs-body-bg);
+}
+
+.update-notice[hidden] {
+  display: none;
+}
+
+.update-notice [data-pwa-update-now] {
+  flex-shrink: 0;
+}
+
+:focus-visible {
+  outline: 0.2rem solid var(--project-primary-hover);
+  outline-offset: 0.2rem;
+}
+
+@media (max-width: 767.98px) {
+  .section-space {
+    padding: 3.5rem 0;
+  }
+
+  .py-lg-6 {
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

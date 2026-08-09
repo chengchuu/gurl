@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  GO_VERSION: "1.19.x"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Go
+        uses: actions/setup-go@v7
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+
+      - name: Check formatting
+        run: test -z "$(gofmt -l .)"
+
+      - name: Check module files
+        run: |
+          go mod tidy
+          test -z "$(git status --porcelain -- go.mod go.sum)"
+
+      - name: Test
+        run: go test ./...
+
+      - name: Test with race detector
+        run: go test -race ./...
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Build
+        run: go build ./...
+
+      - name: Run basic example
+        run: go run ./examples/basic
+
+      - name: Generate Pages artifact
+        run: go run ./cmd/sitegen build
+
+      - name: Validate Pages artifact
+        run: go run ./cmd/sitegen validate

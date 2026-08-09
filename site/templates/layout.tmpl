@@ -1,0 +1,120 @@
+{{define "layout"}}<!doctype html>
+<html lang="en" data-bs-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{.Metadata.Title}}</title>
+    <meta name="description" content="{{.Metadata.Description}}">
+    <link rel="canonical" href="{{.Metadata.Canonical}}">
+    <link rel="sitemap" type="application/xml" href="{{.SitemapURL}}">
+    <link rel="manifest" href="{{.ManifestURL}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{.FaviconURL}}">
+    <link rel="apple-touch-icon" sizes="192x192" href="{{.AppleIconURL}}">
+    <meta name="theme-color" content="{{.Config.Theme.ColorLight}}" media="(prefers-color-scheme: light)" data-theme-color data-theme-color-light="{{.Config.Theme.ColorLight}}" data-theme-color-dark="{{.Config.Theme.ColorDark}}">
+    <meta name="theme-color" content="{{.Config.Theme.ColorDark}}" media="(prefers-color-scheme: dark)" data-theme-color data-theme-color-light="{{.Config.Theme.ColorLight}}" data-theme-color-dark="{{.Config.Theme.ColorDark}}">
+    <meta property="og:title" content="{{.Metadata.Title}}">
+    <meta property="og:description" content="{{.Metadata.Description}}">
+    <meta property="og:url" content="{{.Metadata.Canonical}}">
+    <meta property="og:type" content="{{.Metadata.OGType}}">
+    <meta property="og:site_name" content="{{.Metadata.SiteName}}">
+    <meta property="og:image" content="{{.Metadata.OGImage}}">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{.Metadata.OGImageAlt}}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{.Metadata.Title}}">
+    <meta name="twitter:description" content="{{.Metadata.Description}}">
+    <meta name="twitter:image" content="{{.Metadata.OGImage}}">
+    <meta name="twitter:image:alt" content="{{.Metadata.OGImageAlt}}">
+    <script type="application/ld+json">{{.Metadata.JSONLD}}</script>
+    <script>
+      window.__SITE_CONFIG__ = {{.RuntimeJSON}};
+      (() => {
+        const config = window.__SITE_CONFIG__;
+        const allowed = new Set(["system", "light", "dark"]);
+        let preference = "system";
+        try { preference = localStorage.getItem(config.themeStorageKey) || "system"; } catch (_) {}
+        if (!allowed.has(preference)) preference = "system";
+        const resolved = preference === "system"
+          ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+          : preference;
+        document.documentElement.dataset.bsTheme = resolved;
+        document.documentElement.dataset.themePreference = preference;
+        document.querySelectorAll("meta[data-theme-color]").forEach((meta) => {
+          meta.content = resolved === "dark" ? config.themeDark : config.themeLight;
+        });
+      })();
+    </script>
+    <link rel="stylesheet" href="{{.Config.AssetURL "assets/vendor/bootstrap.min.css"}}">
+    <style>
+      :root,
+      [data-bs-theme="light"] {
+        --project-primary: {{.Config.Theme.Primary.Light.Base}};
+        --project-primary-hover: {{.Config.Theme.Primary.Light.Hover}};
+        --project-primary-active: {{.Config.Theme.Primary.Light.Active}};
+        --project-primary-soft: {{.Config.Theme.Primary.Light.Soft}};
+        --project-primary-rgb: {{.Config.Theme.Primary.Light.RGB}};
+        --project-primary-hover-rgb: {{.Config.Theme.Primary.Light.HoverRGB}};
+        --project-primary-active-rgb: {{.Config.Theme.Primary.Light.ActiveRGB}};
+        --project-primary-contrast: {{.Config.Theme.ColorDark}};
+        --project-primary-state-contrast: {{.Config.Theme.ColorLight}};
+        --bs-primary: var(--project-primary);
+        --bs-primary-rgb: var(--project-primary-rgb);
+        --bs-primary-bg-subtle: var(--project-primary-soft);
+        --bs-primary-text-emphasis: var(--project-primary-active);
+        --bs-link-color: var(--project-primary-hover);
+        --bs-link-color-rgb: var(--project-primary-hover-rgb);
+        --bs-link-hover-color: var(--project-primary-active);
+        --bs-link-hover-color-rgb: var(--project-primary-active-rgb);
+        --bs-focus-ring-color: rgba(var(--project-primary-rgb), 0.35);
+      }
+      [data-bs-theme="dark"] {
+        --project-primary: {{.Config.Theme.Primary.Dark.Base}};
+        --project-primary-hover: {{.Config.Theme.Primary.Dark.Hover}};
+        --project-primary-active: {{.Config.Theme.Primary.Dark.Active}};
+        --project-primary-soft: {{.Config.Theme.Primary.Dark.Soft}};
+        --project-primary-rgb: {{.Config.Theme.Primary.Dark.RGB}};
+        --project-primary-hover-rgb: {{.Config.Theme.Primary.Dark.HoverRGB}};
+        --project-primary-active-rgb: {{.Config.Theme.Primary.Dark.ActiveRGB}};
+        --project-primary-contrast: {{.Config.Theme.ColorDark}};
+        --project-primary-state-contrast: {{.Config.Theme.ColorDark}};
+        --bs-primary: var(--project-primary);
+        --bs-primary-rgb: var(--project-primary-rgb);
+        --bs-primary-bg-subtle: var(--project-primary-soft);
+        --bs-primary-text-emphasis: var(--project-primary-active);
+        --bs-link-color: var(--project-primary-hover);
+        --bs-link-color-rgb: var(--project-primary-hover-rgb);
+        --bs-link-hover-color: var(--project-primary-active);
+        --bs-link-hover-color-rgb: var(--project-primary-active-rgb);
+        --bs-focus-ring-color: rgba(var(--project-primary-rgb), 0.4);
+      }
+    </style>
+    <link rel="stylesheet" href="{{.Config.AssetURL "assets/css/site.css"}}">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    {{.Navigation}}
+    {{.Content}}
+    <aside class="update-notice shadow" data-pwa-update hidden aria-label="Website update">
+      <span>A new website version is ready.</span>
+      <button class="btn btn-primary btn-sm" type="button" data-pwa-update-now>Update now</button>
+    </aside>
+    <footer class="border-top py-4 mt-auto">
+      <div class="container d-flex flex-column flex-md-row justify-content-between gap-3">
+        <p class="mb-0"><strong>{{.Config.DisplayName}}</strong><br><span class="text-body-secondary">{{.Config.License}} License</span></p>
+        <nav aria-label="Footer navigation">
+          <ul class="list-inline mb-0">
+            <li class="list-inline-item"><a href="{{.Config.PagesBasePath}}">Project home</a></li>
+            <li class="list-inline-item"><a href="{{.Config.AssetURL "api/"}}">API documentation</a></li>
+            <li class="list-inline-item"><a href="{{.Config.RepositoryURL}}">GitHub repository</a></li>
+          </ul>
+        </nav>
+      </div>
+    </footer>
+    <script defer src="{{.Config.AssetURL "assets/vendor/bootstrap.bundle.min.js"}}"></script>
+    <script defer src="{{.Config.AssetURL "assets/js/theme.js"}}"></script>
+    <script defer src="{{.Config.AssetURL "assets/js/navigation.js"}}"></script>
+    <script defer src="{{.Config.AssetURL "assets/js/site.js"}}"></script>
+  </body>
+</html>{{end}}

@@ -1,0 +1,83 @@
+{{define "content"}}<main id="main-content">
+  <section class="hero-section border-bottom">
+    <div class="container py-5 py-lg-6">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+          <p class="eyebrow">URL helpers for Go</p>
+          <h1 class="display-4 fw-bold">{{.Config.DisplayName}}</h1>
+          <p class="lead">{{.Config.Description}}</p>
+          <div class="d-flex flex-column align-items-start gap-2 mt-4">
+            <div class="d-flex flex-wrap gap-2 w-100">
+              <a class="btn btn-primary btn-lg" href="{{.Config.AssetURL "examples/"}}">Read the examples</a>
+              <a class="btn btn-outline-secondary btn-lg" href="{{.Config.AssetURL "api/"}}">Read the API reference</a>
+            </div>
+            <a class="btn btn-link btn-lg px-0" href="{{.Config.RepositoryURL}}">View source on GitHub</a>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="code-panel" aria-label="Installation command">
+            <div class="d-flex justify-content-between align-items-center mb-2"><span class="small text-body-secondary">Install</span><button class="btn btn-sm btn-outline-secondary" type="button" data-copy-target="#install-command">Copy</button></div>
+            <pre class="mb-0"><code id="install-command">go get {{.Config.ModulePath}}</code></pre>
+            <p class="copy-status mb-0 mt-2" role="status" aria-live="polite" data-copy-status></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="install" class="section-space" aria-labelledby="install-title">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-5">
+          <h2 id="install-title">Install the package</h2>
+          <p>Use Go {{.Config.GoVersion}} or later. The public package lives at the module root, so the install and import paths are identical.</p>
+        </div>
+        <div class="col-lg-7"><div class="code-panel"><pre><code>go get {{.Config.ModulePath}}</code></pre><pre class="mb-0"><code>import "{{.Config.ModulePath}}"</code></pre></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="usage" class="section-space bg-body-tertiary border-top border-bottom" aria-labelledby="usage-title">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-5">
+          <h2 id="usage-title">Read a query parameter</h2>
+          <p>Pass a URL and key to <code>GetQueryParam</code>. The helper parses the URL with Go's standard library and returns the first value for that key.</p>
+          <a href="{{.Config.RepositoryURL}}/tree/main/examples/basic">Open the complete basic example</a>
+        </div>
+        <div class="col-lg-7"><div class="code-panel"><pre class="mb-0"><code>value, err := {{.Config.PackageName}}.GetQueryParam(
+    "https://example.com/search?q=go&amp;lang=en",
+    "q",
+)
+if err != nil {
+    log.Fatal(err)
+}
+fmt.Println(value) // go</code></pre></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-space" aria-labelledby="capabilities-title">
+    <div class="container">
+      <div class="mb-4"><h2 id="capabilities-title">Verified package capabilities</h2><p class="text-body-secondary">Each operation works on URL strings in memory; the package does not send network requests.</p></div>
+      <div class="row g-4">
+        <article class="col-md-4"><div class="card h-100"><div class="card-body"><h3 class="h5">Query and fragment parameters</h3><p class="mb-0">Get, set, or delete standard query parameters and query-like parameters inside URL fragments.</p></div></div></article>
+        <article class="col-md-4"><div class="card h-100"><div class="card-body"><h3 class="h5">URL components</h3><p class="mb-0">Read or replace paths, hosts, hostnames, and protocols while preserving other parsed components.</p></div></div></article>
+        <article class="col-md-4"><div class="card h-100"><div class="card-body"><h3 class="h5">Inspection and validation</h3><p class="mb-0">Check schemes and hosts, read path file extensions, or remove a URL's query and fragment.</p></div></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-space bg-body-tertiary border-top" aria-labelledby="api-preview-title">
+    <div class="container">
+      <h2 id="api-preview-title">API preview</h2>
+      <p>The full reference is generated from exported Go declarations and GoDoc comments.</p>
+      <div class="list-group list-group-horizontal-lg">
+        <a class="list-group-item list-group-item-action" href="{{.Config.AssetURL "api/"}}#api-getqueryparam"><strong>GetQueryParam</strong><br><span class="text-body-secondary">Read a standard query parameter.</span></a>
+        <a class="list-group-item list-group-item-action" href="{{.Config.AssetURL "api/"}}#api-sethashparam"><strong>SetHashParam</strong><br><span class="text-body-secondary">Update a fragment parameter.</span></a>
+        <a class="list-group-item list-group-item-action" href="{{.Config.AssetURL "api/"}}#api-checkvalid"><strong>CheckValid</strong><br><span class="text-body-secondary">Require a parsed scheme and host.</span></a>
+      </div>
+      <p class="mt-4 mb-0">Requires Go {{.Config.GoVersion}} or later and is available under the {{.Config.License}} License. Read the package on <a href="https://pkg.go.dev/{{.Config.ModulePath}}">pkg.go.dev</a>.</p>
+    </div>
+  </section>
+</main>{{end}}

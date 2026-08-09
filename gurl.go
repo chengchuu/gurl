@@ -2,8 +2,9 @@ package gurl
 
 import (
 	"fmt"
+	"net"
 	"net/url"
-	"path/filepath"
+	"path"
 	"strings"
 )
 
@@ -11,7 +12,7 @@ import (
 //
 // Parameters:
 //
-//	url: The URL from which to retrieve the query parameter.
+//	u: The URL from which to retrieve the query parameter.
 //	param: The name of the query parameter to retrieve.
 //
 // Returns:
@@ -38,7 +39,7 @@ func GetQueryParam(u, param string) (string, error) {
 //
 // Parameters:
 //
-//	url: The URL in which to set the query parameter.
+//	u: The URL in which to set the query parameter.
 //	param: The name of the query parameter to set.
 //	value: The value to set the query parameter to.
 //
@@ -68,7 +69,7 @@ func SetQueryParam(u, param, value string) (string, error) {
 //
 // Parameters:
 //
-//	url: The URL from which to delete the query parameter.
+//	u: The URL from which to delete the query parameter.
 //	param: The name of the query parameter to delete.
 //
 // Returns:
@@ -107,10 +108,11 @@ func parseFragment(fra string) (path string, query string) {
 }
 
 // GetHashParam retrieves the value of a specified hash parameter from a URL.
+// It preserves any additional equals signs in the parameter value.
 //
 // Parameters:
 //
-//	url: The URL from which to retrieve the hash parameter.
+//	u: The URL from which to retrieve the hash parameter.
 //	param: The name of the hash parameter to retrieve.
 //
 // Returns:
@@ -136,7 +138,7 @@ func GetHashParam(u, param string) (string, error) {
 		hashParams = strings.Split(fraQuery, "&")
 	}
 	for _, p := range hashParams {
-		pair := strings.Split(p, "=")
+		pair := strings.SplitN(p, "=", 2)
 		if pair[0] == param && len(pair) > 1 {
 			return pair[1], nil
 		}
@@ -148,7 +150,7 @@ func GetHashParam(u, param string) (string, error) {
 //
 // Parameters:
 //
-//	url: The URL in which to set the hash parameter.
+//	u: The URL in which to set the hash parameter.
 //	param: The name of the hash parameter to set.
 //	value: The value to set the hash parameter to.
 //
@@ -197,7 +199,7 @@ func SetHashParam(u, param, value string) (string, error) {
 //
 // Parameters:
 //
-//	url: The URL from which to delete the hash parameter.
+//	u: The URL from which to delete the hash parameter.
 //	param: The name of the hash parameter to delete.
 //
 // Returns:
@@ -243,7 +245,7 @@ func DelHashParam(u, param string) (string, error) {
 //
 // Parameters:
 //
-//	url: The URL from which to retrieve the path.
+//	u: The URL from which to retrieve the path.
 //
 // Returns:
 //
@@ -268,7 +270,7 @@ func GetPath(u string) (string, error) {
 //
 // Parameters:
 //
-//	url: The URL in which to set the path.
+//	u: The URL in which to set the path.
 //	newPath: The path to set.
 //
 // Returns:
@@ -295,7 +297,7 @@ func SetPath(u, newPath string) (string, error) {
 //
 // Parameters:
 //
-//	url: The URL from which to retrieve the host.
+//	u: The URL from which to retrieve the host.
 //
 // Returns:
 //
@@ -320,7 +322,7 @@ func GetHost(u string) (string, error) {
 //
 // Parameters:
 //
-//	url: The URL in which to set the host.
+//	u: The URL in which to set the host.
 //	newHost: The host to set.
 //
 // Returns:
@@ -343,11 +345,11 @@ func SetHost(u, newHost string) (string, error) {
 	return parsedURL.String(), nil
 }
 
-// GetHostname retrieves the hostname from a URL.
+// GetHostname retrieves the hostname from a URL, without square brackets or a port.
 //
 // Parameters:
 //
-//	url: The URL from which to retrieve the hostname.
+//	u: The URL from which to retrieve the hostname.
 //
 // Returns:
 //
@@ -365,15 +367,15 @@ func GetHostname(u string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	hostParts := strings.Split(parsedURL.Host, ":")
-	return hostParts[0], nil
+	return parsedURL.Hostname(), nil
 }
 
 // SetHostname sets the hostname in a URL and returns the new URL.
+// It preserves an existing port and formats IPv6 hostnames with square brackets.
 //
 // Parameters:
 //
-//	url: The URL in which to set the hostname.
+//	u: The URL in which to set the hostname.
 //	newHostname: The hostname to set.
 //
 // Returns:
@@ -392,11 +394,13 @@ func SetHostname(u, newHostname string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	hostParts := strings.Split(parsedURL.Host, ":")
-	if len(hostParts) > 1 {
-		parsedURL.Host = newHostname + ":" + hostParts[1]
+	hostname := strings.TrimSuffix(strings.TrimPrefix(newHostname, "["), "]")
+	if port := parsedURL.Port(); port != "" {
+		parsedURL.Host = net.JoinHostPort(hostname, port)
+	} else if strings.Contains(hostname, ":") {
+		parsedURL.Host = "[" + hostname + "]"
 	} else {
-		parsedURL.Host = newHostname
+		parsedURL.Host = hostname
 	}
 	return parsedURL.String(), nil
 }
@@ -405,7 +409,7 @@ func SetHostname(u, newHostname string) (string, error) {
 //
 // Parameters:
 //
-//	url: The URL from which to retrieve the protocol.
+//	u: The URL from which to retrieve the protocol.
 //
 // Returns:
 //
@@ -430,7 +434,7 @@ func GetProtocol(u string) (string, error) {
 //
 // Parameters:
 //
-//	url: The URL in which to set the protocol.
+//	u: The URL in which to set the protocol.
 //	newProtocol: The protocol to set.
 //
 // Returns:
@@ -453,11 +457,11 @@ func SetProtocol(u, newProtocol string) (string, error) {
 	return parsedURL.String(), nil
 }
 
-// CheckValid checks if a URL is valid.
+// CheckValid checks whether a URL has a non-empty scheme and hostname.
 //
 // Parameters:
 //
-//	url: The URL to check.
+//	u: The URL to check.
 //
 // Returns:
 //
@@ -472,14 +476,14 @@ func CheckValid(u string) bool {
 	if err != nil {
 		return false
 	}
-	return parsedURL.Scheme != "" && parsedURL.Host != ""
+	return parsedURL.Scheme != "" && parsedURL.Hostname() != ""
 }
 
-// CheckValidHTTPURL checks if a URL is a valid HTTP or HTTPS URL.
+// CheckValidHTTPURL checks if a URL has an HTTP or HTTPS scheme and a non-empty hostname.
 //
 // Parameters:
 //
-//	url: The URL to check.
+//	u: The URL to check.
 //
 // Returns:
 //
@@ -494,14 +498,14 @@ func CheckValidHTTPURL(u string) bool {
 	if err != nil {
 		return false
 	}
-	return parsedURL.Scheme == "http" || parsedURL.Scheme == "https"
+	return (strings.EqualFold(parsedURL.Scheme, "http") || strings.EqualFold(parsedURL.Scheme, "https")) && parsedURL.Hostname() != ""
 }
 
 // GetURLFileType retrieves the file type from a URL.
 //
 // Parameters:
 //
-//	url: The URL from which to retrieve the file type.
+//	u: The URL from which to retrieve the file type.
 //
 // Returns:
 //
@@ -519,14 +523,14 @@ func GetURLFileType(u string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return strings.TrimPrefix(filepath.Ext(parsedURL.Path), "."), nil
+	return strings.TrimPrefix(path.Ext(parsedURL.Path), "."), nil
 }
 
 // GetBaseURL retrieves the base URL without query parameters and fragment.
 //
 // Parameters:
 //
-//	url: The URL from which to retrieve the base URL.
+//	u: The URL from which to retrieve the base URL.
 //
 // Returns:
 //
